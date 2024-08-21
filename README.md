@@ -1,5 +1,23 @@
 # ATSAME51 BLE Peripheral Example : CAN Bus Sniffer
 
+<img src="media/IoT-Made-Easy-Logo.png" width=100>
+
+> "IoT Made Easy!" 
+
+Devices: **| ATSAME51 | RNBD451 |**<br>
+Features: **| CAN | BLE |**
+
+
+## ⚠ Disclaimer
+
+<p><span style="color:red"><b>
+THE SOFTWARE ARE PROVIDED "AS IS" AND GIVE A PATH FOR SELF-SUPPORT AND SELF-MAINTENANCE. This repository contains example code intended to help accelerate client product development. </br>
+
+For additional Microchip repos, see: <a href="https://github.com/Microchip-MPLAB-Harmony" target="_blank">https://github.com/Microchip-MPLAB-Harmony</a>
+
+Checkout the <a href="https://microchipsupport.force.com/s/" target="_blank">Technical support portal</a> to access our knowledge base, community forums or submit support ticket requests.
+</span></p></b>
+
 ## Introduction
 
 This document describes how to program a Microchip 32-bit Cortex-M4F MCU to connect to a Smartphone via BLE while monitoring messages received over its connected CAN bus. A sample smartphone app is provided to communicate with the MCU via BLE and display the CAN FD messages received by the MCU. A Host PC running a terminal emulator serves as a debug window to send/receive diagnostic messages to/from the Host MCU.
@@ -34,7 +52,7 @@ This document describes how to program a Microchip 32-bit Cortex-M4F MCU to conn
 
     <img src=".//media/ata6563-click.jpg" width=250/>
 
-* USB-to-CAN Adapter for Host PC: ["PCAN-USB FD Adapter"](https://phytools.com/collections/peak-system-technik/products/pcan-usb-fd-adapter) manufactured by [phytools](https://phytools.com)
+* USB-to-CAN Adapter for Host PC: ["PCAN-USB FD Adapter"](https://phytools.com/collections/peak-system-technik/products/pcan-usb-fd-adapter) manufactured by [phytools](https://phytools.com) (or equivalent diagnostic tool that can generate CAN messages)
 
     <img src=".//media/PCAN-USB-FD_Adapter.png" width=300/>
 
@@ -54,9 +72,10 @@ This document describes how to program a Microchip 32-bit Cortex-M4F MCU to conn
 
     <img src=".//media/HW_Setup_03.png" width=500/>
 
-4. Connect the PC to the SAM E51 Curiosity Nano using a micro-USB cable and note the new Virtual COM port number that is associated with your connection (e.g. use the Windows Device Manager).
+4. Connect the PC to the SAM E51 Curiosity Nano using a micro-USB cable and note the new Virtual COM port number that is associated with your connection (e.g. use the Windows Device Manager and look for `USB Serial Device`).
 
     <img src=".//media/HW_Setup_04.png" width=500/>
+    <img src=".//media/Win10_DeviceManager.png" width=400/>
 
 5. Install the ATA6563 Click board onto mikroBUS socket #1 of the Curiosity Nano Base.
 
@@ -72,7 +91,7 @@ This document describes how to program a Microchip 32-bit Cortex-M4F MCU to conn
 
 ## Software Requirements
 
-Embedded software development tools need to be installed in order to properly program the WBZ451 Curiosity Development Board and then provision/test it for use with Microsoft Azure IoT services.
+Embedded software development tools need to be installed in order to properly program (and interact with) the WBZ451 Curiosity Development Board.
 
 1. Microchip `MPLAB X` tool chain for embedded code development on 32-bit architecture MCU/MPU platforms (made up of 3 major components)
 
@@ -135,33 +154,39 @@ Embedded software development tools need to be installed in order to properly pr
 
 ## Testing Procedure
 
-1. Open a serial terminal window (e.g. TeraTerm) and connect to the COM port corresponding to your board at `115200 baud` (e.g. choose `File` &gt; choose `New connection`&gt; choose `Serial`&gt; select `Curiosity Virtual COM Port`). It is recommended to enable the "Local Echo" feature in the terminal settings.
+1. Open a serial terminal window (e.g. TeraTerm) and connect to the COM port corresponding to your board (e.g. choose `File` &gt; choose `New connection`&gt; choose `Serial`&gt; select `USB Serial Device`).
 
-    <img src=".//media/TeraTerm_settings.png" width=400/>
+    <img src=".//media/TeraTerm_NewConnection.png" width=400/>
 
-2. Change the toggle rate of `LED0` on the SAM E51 Curiosity Nano board:
+2. Set the baud rate for the COM port connection at `115200 baud` (e.g. choose `Setup` &gt; choose `Serial port`&gt; type in `115200` for the speed &gt; click `New setting`).
+
+    <img src=".//media/TeraTerm_SerialPort.png" width=400/>
+
+3. It is recommended to enable the "Local Echo" feature in the terminal settings in order to see every key that's typed into the terminal window.
+
+4. Change the toggle rate of `LED0` on the SAM E51 Curiosity Nano board:
     - Press the **SW0** button on the SAM E51 Curiosity Nano and note the LED toggle rate change on every press
     - View the toggle rate confirmation messages in the Microchip Bluetooth Data (MBD) smartphone app
 
-3. Send text messages from the Host PC to the smartphone:
+5. Send text messages from the Host PC to the smartphone:
 
     - Type characters in the terminal window and confirm reception/display in the MBD app
         <img src=".//media/terminal_to_mbd.png" width=600/>
     - Type characters in the MBD app and confirm reception/display in the terminal window
         <img src=".//media/mbd_to_terminal.png" width=600/>
 
-4. Launch the PCAN-View PC application.
+6. Launch the PCAN-View PC application.
 
-5. In the `CAN Setup` tab, select `SAE J2284-4 (500k/2M)` for the Bit Rate Preset:
+7. In the `CAN Setup` tab, select `SAE J2284-4 (500k/2M)` for the Bit Rate Preset:
     <img src=".//media/PCAN-View_CAN_Setup.png" width=400/>
 
-6. In the serial terminal window, type `M` or `m` to bring up the list of available CAN operations. Enter the keys `1`, `2`, `3`, `4`, & `5` to send out sample standard and extended CAN messages.
+8. In the serial terminal window, type `M` or `m` to bring up the list of available CAN operations. Enter the keys `1`, `2`, `3`, `4`, & `5` to send out sample standard and extended CAN messages.
     <img src=".//media/CAN_demo_menu.png" width=600/>
 
-7. In the PCAN-View GUI, confirm that 5 different CAN messages show up in the `Receive` window.
+9. In the PCAN-View GUI, confirm that 5 different CAN messages show up in the `Receive` window.
     <img src=".//media/PCAN-View_Receive.png" width=600/>
 
-8. Create/transmit a new **standard** CAN message by selecting `File > New Message` in the PCAN-View's main toolbar. In the **New Transmit Message** pop-up window:
+10. Create/transmit a new **standard** CAN message by selecting `File > New Message` in the PCAN-View's main toolbar. In the **New Transmit Message** pop-up window:
 
     - Enter an ID that's less than 0x7FF
     - Select the number of data bytes in the message and set the value of each byte as desired 
@@ -171,7 +196,7 @@ Embedded software development tools need to be installed in order to properly pr
 
         <img src=".//media/PCAN-View_StandardMesg.png" width=400/>
 
-9. Create/transmit a new **extended** CAN message by selecting `File > New Message` in the PCAN-View's main toolbar. In the **New Transmit Message** pop-up window:
+11. Create/transmit a new **extended** CAN message by selecting `File > New Message` in the PCAN-View's main toolbar. In the **New Transmit Message** pop-up window:
 
     - Enter an ID that's greater than or equal to 0x10000
     - Select the number of data bytes in the message and set the value of each byte as desired
@@ -181,11 +206,11 @@ Embedded software development tools need to be installed in order to properly pr
 
         <img src=".//media/PCAN-View_ExtendedMesg.png" width=400/>
 
-10. In the `Transmit` window of the PCAN-View GUI, confirm that both messages are being received periodically based on the settings of each message's cycle time.
+12. In the `Transmit` window of the PCAN-View GUI, confirm that both messages are being received periodically based on the settings of each message's cycle time.
 
     <img src=".//media/PCAN-View_Transmit.png" width=700/>
 
-11. Confirm that the same periodic CAN message transmissions are displayed in the Microchip Bluetooth Data (MBD) smartphone app.
+13. Confirm that the same periodic CAN message transmissions are displayed in the Microchip Bluetooth Data (MBD) smartphone app.
 
 ## Custom GATT Services
 
